@@ -64,6 +64,11 @@ public class User {
     private boolean isVerified = false;
     private String otp;
     private LocalDateTime otpGeneratedTime;
+    private String resetPasswordToken;
+    private LocalDateTime resetPasswordTokenExpiry;
+    private int failedLoginAttempts = 0;
+    private boolean isAccountLocked = false;
+    private LocalDateTime accountLockedTime;
 
 
 

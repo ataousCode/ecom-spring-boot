@@ -1,7 +1,10 @@
 package com.almousleck.ecombackend.security;
 
 import com.almousleck.ecombackend.config.ApplicationUserDetailsService;
+import com.almousleck.ecombackend.config.AuthenticationFailureListener;
+import com.almousleck.ecombackend.config.AuthenticationSuccessEventListener;
 import com.almousleck.ecombackend.jwt.AuthenticationTokenFilter;
+import com.almousleck.ecombackend.otp.LoginAttemptService;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,9 +15,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
+
 public class SecurityConfig {
-
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -41,5 +43,15 @@ public class SecurityConfig {
         authenticationProvider.setUserDetailsService(applicationUserDetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
+    }
+
+    @Bean
+    public AuthenticationFailureListener authenticationFailureListener(LoginAttemptService loginAttemptService) {
+        return new AuthenticationFailureListener(loginAttemptService);
+    }
+
+    @Bean
+    public AuthenticationSuccessEventListener authenticationSuccessEventListener(LoginAttemptService loginAttemptService) {
+        return new AuthenticationSuccessEventListener(loginAttemptService);
     }
 }

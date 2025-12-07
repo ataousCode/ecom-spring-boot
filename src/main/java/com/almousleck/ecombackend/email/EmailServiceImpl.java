@@ -30,4 +30,20 @@ public class EmailServiceImpl implements EmailService{
 
         mailSender.send(message);
     }
+
+    @Override
+    public void sendPasswordResetEmail(String to, String token) throws MessagingException {
+        Context context = new Context();
+        context.setVariable("token", token);
+
+        String process = templateEngine.process("password-reset-email", context);
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
+
+        helper.setSubject("Password Reset Request");
+        helper.setText(process, true);
+        helper.setTo(to);
+
+        mailSender.send(mimeMessage);
+    }
 }
