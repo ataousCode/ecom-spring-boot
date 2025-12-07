@@ -10,5 +10,6 @@ public interface UserService {
     User updateUser(UserUpdateRequest request, Long userId);
     void deleteUser(Long userId);
     UserDto convertUserToDto(User user);
+    void verifyOtp(String email, String otp);
     User getAuthenticatedUser();
 }

@@ -10,6 +10,9 @@ public class UserDto {
     private String firstName;
     private String lastName;
     private String email;
+    private boolean isVerified;
+    private String otp;
+    private String otpGeneratedTime;
     private List<OrderDto> orders;
     private CartDto cart;
 }

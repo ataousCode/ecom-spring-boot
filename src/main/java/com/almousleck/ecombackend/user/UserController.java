@@ -30,6 +30,18 @@ public class UserController {
         }
     }
 
+    @PostMapping("/verify-otp")
+    public ResponseEntity<ApiResponse> verifyOtp(
+            @RequestParam String email,
+            @RequestParam String otp) {
+        try {
+            userService.verifyOtp(email, otp);
+            return ResponseEntity.ok(new ApiResponse("OTP Verified Success!", null));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
+        }
+    }
+
     // get user by id:
     @GetMapping("/{userId}")
     public ResponseEntity<ApiResponse> getUserById(@PathVariable Long userId) {

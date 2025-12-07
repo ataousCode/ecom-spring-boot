@@ -22,6 +22,7 @@ public class ApplicationUserDetails implements UserDetails {
     private Long id;
     private String email;
     private String password;
+    private boolean isVerified;
 
     private Collection<GrantedAuthority> authorities;
 
@@ -36,6 +37,7 @@ public class ApplicationUserDetails implements UserDetails {
                 user.getId(),
                 user.getEmail(),
                 user.getPassword(),
+                user.isVerified(),
                 authorities
         );
     }
@@ -57,21 +59,21 @@ public class ApplicationUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return UserDetails.super.isAccountNonExpired();
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+        return isVerified;
     }
 }

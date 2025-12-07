@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -58,6 +60,10 @@ public class User {
             columnDefinition = "TEXT"
     )
     private String password;
+
+    private boolean isVerified = false;
+    private String otp;
+    private LocalDateTime otpGeneratedTime;
 
 
 

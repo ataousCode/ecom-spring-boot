@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>OTP Verification</title>
+</head>
+<body>
+<h1>Verify Your Account</h1>
+<p>Thank you for registering. Please use the following One-Time Password (OTP) to complete your registration:</p>
+<h2 th:text="${otp}"></h2>
+<p>This OTP is valid for 5 minutes.</p>
+</body>
+</html>
