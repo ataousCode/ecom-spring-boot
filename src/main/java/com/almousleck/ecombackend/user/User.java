@@ -1,5 +1,6 @@
 package com.almousleck.ecombackend.user;
 
+import com.almousleck.ecombackend.cart.Cart;
 import com.almousleck.ecombackend.role.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -58,7 +59,13 @@ public class User {
     )
     private String password;
 
+
+
     // Entity relationship
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Cart cart;
+
     @ManyToMany(
             fetch = FetchType.EAGER,
             cascade = {

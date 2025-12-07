@@ -1,11 +1,10 @@
-package com.almousleck.ecombackend.contoller;
+package com.almousleck.ecombackend.auth;
 
 import com.almousleck.ecombackend.config.ApplicationUserDetails;
 import com.almousleck.ecombackend.jwt.JwtUtils;
 import com.almousleck.ecombackend.request.LoginRequest;
 import com.almousleck.ecombackend.response.ApiResponse;
 import com.almousleck.ecombackend.response.JwtResponse;
-import com.almousleck.ecombackend.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
