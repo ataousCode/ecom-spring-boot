@@ -8,7 +8,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class AuthenticationFailureListener implements ApplicationListener<AuthenticationFailureBadCredentialsEvent> {
+public class AuthenticationFailureListener implements
+        ApplicationListener<AuthenticationFailureBadCredentialsEvent> {
     private final LoginAttemptService loginAttemptService;
 
     @Override

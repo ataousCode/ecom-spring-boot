@@ -19,15 +19,26 @@ import java.util.List;
 @RequiredArgsConstructor
 @EnableWebSecurity
 @Configuration
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 public class ApplicationSecurityConfiguration {
 
     private final ApplicationUserDetailsService userDetailsService;
     private final JwtAuthenticationEntryPoint authenticationEntryPoint;
     private final SecurityConfig securityConfig;
 
-    private static final List<String> SECURED_URLS =
-            List.of("/api/v1/carts/**", "/api/v1/cartItems/**");
+    private static final String[] PUBLIC_GETS = {
+            "/api/v1/products/**",
+            "/api/v1/categories/**",
+            "/api/v1/images/**"
+    };
+
+    private static final String[] ADMIN_ONLY = {
+            "/api/v1/carts/**",
+            "/api/v1/cartItems/**",
+            "/api/v1/products/**",    // POST/PUT/DELETE will be restricted below
+            "/api/v1/categories/**",
+            "/api/v1/images/**"
+    };
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationTokenFilter authenticationTokenFilter) throws Exception {
@@ -37,8 +48,8 @@ public class ApplicationSecurityConfiguration {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(SECURED_URLS.toArray(String[]::new))
-                        .authenticated().anyRequest().permitAll());
+                        .requestMatchers(ADMIN_ONLY).hasRole("ADMIN")
+                        .anyRequest().permitAll());
         http.authenticationProvider(securityConfig.daoAuthenticationProvider(userDetailsService));
         http.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

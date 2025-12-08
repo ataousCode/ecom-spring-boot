@@ -23,54 +23,55 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        Set<String> defaultRoles =  Set.of("ROLE_ADMIN", "ROLE_USER");
-        createDefaultRoleIfNotExits(defaultRoles);
-        createDefaultUserIfNotExits();
-        createDefaultRoleIfNotExits(defaultRoles);
-        createDefaultAdminIfNotExits();
+        createDefaultRoles();
+        createAdminAccount();
+        createUserAccount();
     }
 
     //Helpers method
-    private void createDefaultUserIfNotExits(){
-        Role userRole = roleRepository.findByName("ROLE_USER").get();
-        for (int i = 1; i <= 5; i++){
-            String defaultEmail = "sam"+i+"@email.com";
-            if (userRepository.existsByEmail(defaultEmail)){
-                continue;
-            }
-            User user = new User();
-            user.setFirstName("The User");
-            user.setLastName("User" + i);
-            user.setEmail(defaultEmail);
-            user.setPassword(passwordEncoder.encode("password"));
-            user.setRoles(Set.of(userRole));
-            userRepository.save(user);
-            System.out.println("Default vet user " + i + " created successfully.");
-        }
-    }
-
-    private void createDefaultAdminIfNotExits(){
-        Role adminRole = roleRepository.findByName("ROLE_ADMIN").get();
-        for (int i = 1; i<=2; i++){
-            String defaultEmail = "almouslecka"+i+"@email.com";
-            if (userRepository.existsByEmail(defaultEmail)){
-                continue;
-            }
-            User user = new User();
-            user.setFirstName("Almousleck");
-            user.setLastName("Atalib Ag" + i);
-            user.setEmail(defaultEmail);
-            user.setPassword(passwordEncoder.encode("password"));
-            user.setRoles(Set.of(adminRole));
-            userRepository.save(user);
-            System.out.println("Default admin user " + i + " created successfully.");
-        }
-    }
-
-    private void createDefaultRoleIfNotExits(Set<String> roles){
-        roles.stream()
+    private void createDefaultRoles() {
+        Set<String> defaultRoles = Set.of("ROLE_ADMIN", "ROLE_USER");
+        defaultRoles.stream()
                 .filter(role -> roleRepository.findByName(role).isEmpty())
-                .map(Role:: new).forEach(roleRepository::save);
+                .map(Role::new)
+                .forEach(roleRepository::save);
+    }
 
+    private void createAdminAccount() {
+        String adminEmail = "almouslecka@gmail.com";
+        if (userRepository.existsByEmail(adminEmail)) {
+            return;
+        }
+
+        Role adminRole = roleRepository.findByName("ROLE_ADMIN").orElseThrow();
+        User admin = new User();
+        admin.setFirstName("Almousleck");
+        admin.setLastName("Atalib Ag");
+        admin.setEmail(adminEmail);
+        admin.setPassword(passwordEncoder.encode("password"));
+        admin.setRoles(Set.of(adminRole));
+        admin.setVerified(true);
+        admin.setAccountLocked(false);
+        admin.setFailedLoginAttempts(0);
+        userRepository.save(admin);
+    }
+
+    private void createUserAccount() {
+        String userEmail = "lamine@gmail.com";
+        if (userRepository.existsByEmail(userEmail)) {
+            return;
+        }
+
+        Role userRole = roleRepository.findByName("ROLE_USER").orElseThrow();
+        User user = new User();
+        user.setFirstName("Lamine");
+        user.setLastName("Ag");
+        user.setEmail(userEmail);
+        user.setPassword(passwordEncoder.encode("password"));
+        user.setRoles(Set.of(userRole));
+        user.setVerified(true);
+        user.setAccountLocked(false);
+        user.setFailedLoginAttempts(0);
+        userRepository.save(user);
     }
 }
